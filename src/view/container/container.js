@@ -38,7 +38,7 @@ export default class Container extends Component{
         </Header>
         <Layout>
           {/* 侧边栏 */}
-          <Sider collapsed={true} className='Jside'>
+          <Sider className='Jside'>
             <Jtab />
           </Sider>
           <Layout className='Jmain'>
