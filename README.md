@@ -10,5 +10,6 @@ _主要用到的包：_
 
 **keyword**: `electron`, `react`, `mobx`, `nedb`, `cheerio`, `antd`, `react-lazyload`, `babel`, `webpack`, `react-waypoint`
 
->npm i && npm run build
->electron .
+> npm i && npm run build
+
+> electron .
