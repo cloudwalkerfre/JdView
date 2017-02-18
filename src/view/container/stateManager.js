@@ -5,9 +5,9 @@ const preRequestNumber = 30;
 let cumus = {page: preRequestNumber, pic: preRequestNumber, ooxx: preRequestNumber};
 
 class stateManager{
-  @observable page = [];
-  @observable pic = [];
-  @observable ooxx = [];
+  @observable.shallow page = [];
+  @observable.shallow pic = [];
+  @observable.shallow ooxx = [];
 
   constructor(){
 
@@ -67,9 +67,6 @@ class stateManager{
   @computed get picNum(){
     return this.pic.length;
   }
-  // popBack(){
-  //   this.states.pop();
-  // }
 }
 
 export default stateManager;
