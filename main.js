@@ -61,9 +61,7 @@ function createWindow(){
   console.log('create Electron Window ...');
   // app.server = require('./server/app.js');
 
-  CL.dirtyPage(db.page);
-  CL.dirtyPic(db.pic);
-  CL.dirtyOOXX(db.ooxx);
+  CL.init(db);
 
   /*
     all the custom below is targeted on MAC, other platform never tested
@@ -80,7 +78,7 @@ function createWindow(){
   win.on('closed', () => { win = null;});
 
   /*
-  set props through ipcMain
+  set state through ipcMain
   */
   ipcMain.on('synchronous-message', (event, arg) => {
     // console.log(arg);
@@ -91,17 +89,33 @@ function createWindow(){
         db.page.find({}).sort({date_group:-1, index:-1}).skip(arg[1]).limit(arg[2]).exec((err, doc) => {
           event.returnValue = doc;
         });
+        // checking if need to update
+        db.page.find({}).sort({date_group:-1, index:-1}).exec((err, doc) => {
+          if(doc.length - arg[2] < 1.5 * (arg[2] - arg[1])){
+            CL.crawlMore('page', db)
+          }
+        });
         break;
 
       case 'pic':
         db.pic.find({}).sort({_id:-1}).skip(arg[1]).limit(arg[2]).exec((err, doc) => {
           event.returnValue = doc;
         });
+        db.pic.find({}).sort({_id:-1}).exec((err, doc) => {
+          if(doc.length - arg[2] < 1.5 * (arg[2] - arg[1])){
+            CL.crawlMore('pic', db)
+          }
+        });
         break;
 
       case 'ooxx':
         db.ooxx.find({}).sort({_id:-1}).skip(arg[1]).limit(arg[2]).exec((err, doc) => {
           event.returnValue = doc;
+        });
+        db.ooxx.find({}).sort({_id:-1}).exec((err, doc) => {
+          if(doc.length - arg[2] < 1.5 * (arg[2] - arg[1])){
+            CL.crawlMore('ooxx', db)
+          }
         });
         break;
 

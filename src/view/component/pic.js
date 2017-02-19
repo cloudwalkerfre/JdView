@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Row, Col, Spin } from 'antd';
+import { Row, Col } from 'antd';
 import Jpicbox from './picBox';
-import Waypoint from 'react-waypoint';
+import JloadMore from './loadMore';
 
 @inject("stateM") @observer
 export default class Jpic extends Component{
@@ -17,11 +17,7 @@ export default class Jpic extends Component{
               <Jpicbox state={state} key={state._id} />
             </Col>
           ) : console.log('no DATA!')}
-          <Waypoint onEnter={() => stateM.loadMore('pic')}>
-            <div className="loader-bottom">
-              <Spin/>
-            </div>
-          </Waypoint>
+        <JloadMore loadMoreType='pic' stateM={stateM} />
       </Row>
     )
   }

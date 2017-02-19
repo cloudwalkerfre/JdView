@@ -1,8 +1,8 @@
 import { observable, computed, action } from 'mobx';
 const ipcRenderer = window.require('electron').ipcRenderer;
 
-const preRequestNumber = 30;
-let cumus = {page: preRequestNumber, pic: preRequestNumber, ooxx: preRequestNumber};
+const preRequestNumber = 50;
+let cumus = {page: preRequestNumber/2, pic: preRequestNumber, ooxx: preRequestNumber};
 
 class stateManager{
   @observable.shallow page = [];
@@ -12,7 +12,7 @@ class stateManager{
   constructor(){
 
     let msg = [
-      ipcRenderer.sendSync('synchronous-message', ['page', 0, preRequestNumber]),
+      ipcRenderer.sendSync('synchronous-message', ['page', 0, preRequestNumber/2]), // 文章数本身少，初始化比图少一点
       ipcRenderer.sendSync('synchronous-message', ['pic', 0, preRequestNumber]),
       ipcRenderer.sendSync('synchronous-message', ['ooxx', 0, preRequestNumber])
     ];
@@ -36,7 +36,7 @@ class stateManager{
   @action loadMore(type){
     // console.log('loadmore...', cumus[type], preRequestNumber);
     let lres = ipcRenderer.sendSync('synchronous-message', [type, cumus[type], cumus[type] + preRequestNumber]);
-    cumus[type] += preRequestNumber;
+    cumus[type] += lres.length;
     switch (type) {
       case 'page':
         lres.forEach(i => {
